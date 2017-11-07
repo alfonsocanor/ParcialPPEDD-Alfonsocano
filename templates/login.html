@@ -1,0 +1,84 @@
+{% extends "bootstrap/base.html" %}
+{% block content %}
+
+<html>
+<head>
+     
+<style>
+        table, th, td {
+          border: 1px solid black;
+          text-align: center;
+
+        }
+        .center {
+            text-align: center;
+            margin: auto;
+            width: 80%;
+            border: 3px solid rgba(0, 0, 0, 0);
+            padding: 20px;
+        }
+</style>
+</head>
+<body>
+
+
+{% if Y %}
+<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+            <a class="navbar-brand" href="/">FARMACIA</a>
+            <li><a href="/productsperclient">Productos por cliente</a></li>
+            <li><a href="/clientsperproduct">Clientes por producto</a></li>
+            <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+            <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+            <li><a href="/logout">Cerrar sesión</a></li>
+            </ul>
+        </div>
+</nav>
+<DIV class=center>
+<p>There is a problem! FilecheckError! Contact with tecnical support!</p>
+</DIV>
+{% else %}
+{% if X %}
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                    <a class="navbar-brand" href="/">FARMASOFT</a>
+                    <li><a href="/login">Ingresar</a></li>
+            </ul>
+        </div>
+    </nav>
+<form method="POST" action="{{ url_for('login') }}">
+<DIV class=center>
+{{ login.csrf_token }}
+{{ login.username.label}}
+{{ login.username }}<br>
+{{ login.password.label }}
+{{ login.password }}<br>
+<p>Usuario o contraseña invalidos</p>
+<input type='submit' action='submit'>
+</DIV>
+{% else %}
+<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                    <a class="navbar-brand" href="/">FARMASOFT</a>
+                    <li><a href="/login">Ingresar</a></li>
+            </ul>
+        </div>
+    </nav>
+<form method="POST" action="{{ url_for('login') }}">
+<DIV class=center>
+{{ login.csrf_token }}
+{{ login.username.label}}
+{{ login.username }}<br>
+{{ login.password.label }}
+{{ login.password }}<br>
+<input type='submit' action='submit'>
+</DIV>
+{% endif %}
+{% endif %}
+</form>
+</body>
+</html>
+{% endblock %}

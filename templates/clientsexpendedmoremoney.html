@@ -1,0 +1,83 @@
+{% extends "bootstrap/base.html" %}
+{% block content %}
+<html>
+<head>
+<style>
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+        }
+        .center {
+            text-align: center;
+            margin: auto;
+            width: 60%;
+            border: 3px solid rgba(0, 0, 0, 0);
+            padding: 20px;
+        }
+</style>
+</head>
+<body>
+{% if session['logged_in'] %}
+        <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                  <ul class="nav navbar-nav">
+                    <a class="navbar-brand" href="/">FARMACIA</a>
+                    <li><a href="/productsperclient">Productos por cliente</a></li>
+                    <li><a href="/clientsperproduct">Clientes por producto</a></li>
+                    <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+                    <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+                    <li><a href="/logout">Cerrar sesión</a></li>
+                  </ul>
+                </div>
+        </nav>
+<form method='POST' action="{{ url_for('clientsExpendedMoreMoney') }}">
+<DIV class=center>
+{{ ranking.csrf_token }}
+{{ ranking.K.label }}
+{{ ranking.K}}
+<input type="submit" action="submit"><br>
+
+{% if Z %}
+{% if X %}
+<table style='width:auto' align="center">
+<tr>
+    <th>number</th>
+    <th>client</th>
+    <th>money</th>
+{% for i in Y %}
+</tr>
+    <td>
+        {{ i[0] }}
+    </td>
+    <td>
+        {{ i[1] }}
+    </td>
+    <td>
+        {{ i[2] }}
+    </td>
+{% endfor %}
+</table>
+{% endif %}
+{% endif %}
+</DIV>
+{% else %}
+<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <a class="navbar-brand" href="/">FARMACIA</a>
+                <li><a href="/productsperclient">Productos por cliente</a></li>
+                <li><a href="/clientsperproduct">Clientes por producto</a></li>
+                <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+                <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+          </ul>
+        </div>
+</nav>
+<DIV class=center>
+<p>No ha iniciado sesión. Acceso restringido</p><a href='/login'>Haga click aquí</a>
+{% endif %} 
+</DIV>
+</form>
+</body>
+</html>
+
+{% endblock %}

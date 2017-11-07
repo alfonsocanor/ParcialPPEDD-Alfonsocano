@@ -1,0 +1,113 @@
+{% extends "bootstrap/base.html" %}
+{% block content %}
+
+<html>
+<head>
+<style>
+        table, th, td {
+          border: 1px solid black;
+          text-align: center;
+
+        }
+        .center {
+            text-align: center;
+            margin: auto;
+            width: 80%;
+            border: 3px solid rgba(0, 0, 0, 0);
+            padding: 20px;
+        }
+</style>
+</head>
+<body>
+{% if session['logged_in'] %}
+<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav">
+            <a class="navbar-brand" href="/">FARMACIA</a>
+            <li><a href="/productsperclient">Productos por cliente</a></li>
+            <li><a href="/clientsperproduct">Clientes por producto</a></li>
+            <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+            <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+            <li><a href="/logout">Cerrar sesión</a></li>
+          </ul>
+        </div>
+</nav>
+<form method="POST" action="{{ url_for('clientsPerProduct') }}">
+<DIV class=center>
+{{ product.csrf_token }}
+{{ product.productname.label }}
+{{ product.productname }}
+<input type="submit" action="submit"><br><br>
+
+{% if Z %}
+{% if W %}
+
+<br>
+<p>Utilice la lista para copiar el nombre exacto del producto en la búsqueda</p>
+<table style="width:auto" align="center">
+<tr>
+    <th>Products</th>
+</tr>
+{% for i in Y %}
+  <tr>
+    <td>
+      {{ i }}
+    </td>
+  </tr>
+{% endfor %}
+
+{% else %}
+
+{% if X %}
+<table style="width:auto" align="center">
+        <tr>
+            <th>Product</th>
+            <th>Product ID</th>
+            <th>Client Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+        {% for i in Y %}
+        <tr>
+        <td>
+            {{ product.productname.data }}
+        </td>
+        <td>
+            {{ i[0] }}
+        </td>
+        <td>
+            {{ i[1] }}
+        </td>
+        <td>
+            {{ i[2] }}
+        </td>
+        <td>
+            {{ i[3] }}
+        </td>
+      </tr>
+        {% endfor %}
+        </table>
+{% endif %}
+{% endif %}
+{% endif %}
+</DIV>
+{% else %}
+<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <ul class="nav navbar-nav">
+            <a class="navbar-brand" href="/">FARMACIA</a>
+            <li><a href="/productsperclient">Productos por cliente</a></li>
+            <li><a href="/clientsperproduct">Clientes por producto</a></li>
+            <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+            <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+          </ul>
+        </div>
+</nav>
+<DIV class=center>
+<p>No ha iniciado sesión. Acceso restringido</p><a href='/login'>Haga click aquí</a>
+{% endif %} 
+</DIV>
+</form>
+</body>  
+</html>
+{% endblock %}
