@@ -383,7 +383,7 @@ def login():
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
-    return redirect('/login')
+    return redirect('/')
 
 @app.route('/productsperclient', methods=['GET', 'POST'])
 def productsPerClient():
@@ -409,7 +409,7 @@ def productsPerClient():
                 Y.remove('search')
         return render_template('productsPerClient.html', name=name, Y=Y, X=X, Z=Z, W=W)
     else:
-        return redirect ('/login')
+        return redirect ('/')
 
 @app.route('/clientsperproduct', methods=['GET', 'POST'])
 def clientsPerProduct():
@@ -435,7 +435,7 @@ def clientsPerProduct():
                 Y.remove('search')
         return render_template('clientsPerProducts.html', product=product, Y=Y, X=X, Z=Z, W=W)
     else:
-        return redirect('/login')
+        return redirect('/')
 
 @app.route('/clientsexpendedmoremoney', methods=['GET', 'POST'])
 def clientsExpendedMoreMoney():
@@ -463,7 +463,7 @@ def clientsExpendedMoreMoney():
                 ranking.K.data = ''
         return render_template('clientsexpendedmoremoney.html', ranking=ranking, Y=Y, X=X, Z=Z)
     else:
-        return redirect('/login')
+        return redirect('/')
 
 @app.route('/mostselledproducts', methods=['GET', 'POST'])
 def mostSelledProducts():
@@ -491,7 +491,7 @@ def mostSelledProducts():
                 ranking.K.data = ''
         return render_template('mostselledproducts.html', ranking=ranking, Y=Y, X=X, Z=Z)
     else:
-        return redirect('/login')
+        return redirect('/')
 
 @app.errorhandler(404)
 def not_found_error(error):
