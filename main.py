@@ -387,99 +387,111 @@ def logout():
 
 @app.route('/productsperclient', methods=['GET', 'POST'])
 def productsPerClient():
-    name = References()
-    X = False
-    Y = []
-    Z = True
-    W = False
-    if name.clientName.data == '':
-        Z = False
-    if name.validate_on_submit():
-        W = False
+    if session.get('logged_in'):
+        name = References()
+        X = False
+        Y = []
         Z = True
-        X = True
-        gc = GeneralConsults('db.csv')
-        Y = gc.productsPerClient(name.clientName.data)
-        if Y == [] or (len(Y) == 1 and Y[0] == 'search'):
+        W = False
+        if name.clientName.data == '':
             Z = False
-            name.clientName.data = ''
-        elif Y[0] == 'search':
-            W = True
-            Y.remove('search')
-    return render_template('productsPerClient.html', name=name, Y=Y, X=X, Z=Z, W=W)
+        if name.validate_on_submit():
+            W = False
+            Z = True
+            X = True
+            gc = GeneralConsults('db.csv')
+            Y = gc.productsPerClient(name.clientName.data)
+            if Y == [] or (len(Y) == 1 and Y[0] == 'search'):
+                Z = False
+                name.clientName.data = ''
+            elif Y[0] == 'search':
+                W = True
+                Y.remove('search')
+        return render_template('productsPerClient.html', name=name, Y=Y, X=X, Z=Z, W=W)
+    else:
+        return redirect ('/login')
 
 @app.route('/clientsperproduct', methods=['GET', 'POST'])
 def clientsPerProduct():
-    product = References()
-    X = False
-    Y = []
-    Z = True
-    W = False
-    if product.productname.data == '':
-        Z = False
-    if product.validate_on_submit():
-        W = False
+    if session.get('logged_in'):
+        product = References()
+        X = False
+        Y = []
         Z = True
-        X = True
-        gc = GeneralConsults('db.csv')
-        Y = gc.clientsPerProduct(product.productname.data)
-        if Y == [] or (len(Y) == 1 and Y[0] == 'search'):
+        W = False
+        if product.productname.data == '':
             Z = False
-            product.productname.data = ''
-        elif Y[0] == 'search':
-            W = True
-            Y.remove('search')
-    return render_template('clientsPerProducts.html', product=product, Y=Y, X=X, Z=Z, W=W)
+        if product.validate_on_submit():
+            W = False
+            Z = True
+            X = True
+            gc = GeneralConsults('db.csv')
+            Y = gc.clientsPerProduct(product.productname.data)
+            if Y == [] or (len(Y) == 1 and Y[0] == 'search'):
+                Z = False
+                product.productname.data = ''
+            elif Y[0] == 'search':
+                W = True
+                Y.remove('search')
+        return render_template('clientsPerProducts.html', product=product, Y=Y, X=X, Z=Z, W=W)
+    else:
+        return redirect('/login')
 
 @app.route('/clientsexpendedmoremoney', methods=['GET', 'POST'])
 def clientsExpendedMoreMoney():
-    ranking = References()
-    X = False
-    Y = []
-    Z = True #varible used to hide table if the value is not correct or empty
-    try:
-        aux = ranking.K.data
-        aux = int(aux)
-    except TypeError:
-        ranking.K.data = ''
-        Z = False
-    except ValueError:
-        ranking.K.data = ''
-        Z = False
-    if ranking.validate_on_submit():
-        if ranking.K.data == '':
-            ranking.K.data = 0
-        X = True
-        gc = GeneralConsults('db.csv')
-        Y = gc.n_ClientsExpendedMoreMoney(ranking.K.data)
-        if ranking.K.data == 0:
+    if session.get('logged_in'):
+        ranking = References()
+        X = False
+        Y = []
+        Z = True #varible used to hide table if the value is not correct or empty
+        try:
+            aux = ranking.K.data
+            aux = int(aux)
+        except TypeError:
             ranking.K.data = ''
-    return render_template('clientsexpendedmoremoney.html', ranking=ranking, Y=Y, X=X, Z=Z)
+            Z = False
+        except ValueError:
+            ranking.K.data = ''
+            Z = False
+        if ranking.validate_on_submit():
+            if ranking.K.data == '':
+                ranking.K.data = 0
+            X = True
+            gc = GeneralConsults('db.csv')
+            Y = gc.n_ClientsExpendedMoreMoney(ranking.K.data)
+            if ranking.K.data == 0:
+                ranking.K.data = ''
+        return render_template('clientsexpendedmoremoney.html', ranking=ranking, Y=Y, X=X, Z=Z)
+    else:
+        return redirect('/login')
 
 @app.route('/mostselledproducts', methods=['GET', 'POST'])
 def mostSelledProducts():
-    ranking = References()
-    X = False
-    Y = []
-    Z = True #varible used to hide table if the value enter is not correct or empty
-    try:
-        aux = ranking.K.data
-        aux = int(aux)
-    except TypeError:
-        ranking.K.data = ''
-        Z = False
-    except ValueError:
-        ranking.K.data = ''
-        Z = False
-    if ranking.validate_on_submit():
-        if ranking.K.data == '':
-            ranking.K.data = 0
-        X = True
-        gc = GeneralConsults('db.csv')
-        Y = gc.n_MostSelledProducts(ranking.K.data)
-        if ranking.K.data == 0:
+    if session.get('logged_in'):
+        ranking = References()
+        X = False
+        Y = []
+        Z = True #varible used to hide table if the value enter is not correct or empty
+        try:
+            aux = ranking.K.data
+            aux = int(aux)
+        except TypeError:
             ranking.K.data = ''
-    return render_template('mostselledproducts.html', ranking=ranking, Y=Y, X=X, Z=Z)
+            Z = False
+        except ValueError:
+            ranking.K.data = ''
+            Z = False
+        if ranking.validate_on_submit():
+            if ranking.K.data == '':
+                ranking.K.data = 0
+            X = True
+            gc = GeneralConsults('db.csv')
+            Y = gc.n_MostSelledProducts(ranking.K.data)
+            if ranking.K.data == 0:
+                ranking.K.data = ''
+        return render_template('mostselledproducts.html', ranking=ranking, Y=Y, X=X, Z=Z)
+    else:
+        return redirect('/login')
 
 @app.errorhandler(404)
 def not_found_error(error):
