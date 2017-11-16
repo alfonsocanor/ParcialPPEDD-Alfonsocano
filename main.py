@@ -14,6 +14,7 @@ app.config['SECRET_KEY'] = 'ThisissecretIFTS18'
 class Login(FlaskForm):
     username = StringField('Usuario')
     password = PasswordField('Contraseña')
+    passwordConfirmation = PasswordField('Confirmar Contraseña')
 
 class References(FlaskForm):
     clientName = StringField('Nombre del cliente:')
@@ -369,7 +370,7 @@ def login():
                 for row in X:
                     print(row[0])
                     print(row[1])
-                    if login.username.data == row[1] and login.password.data == row[0]:
+                    if login.username.data == row[0] and login.password.data == row[1]:
                         session['logged_in'] = True
                         return redirect('/')
             if login.password.data == None and login.username.data == None:
@@ -379,6 +380,29 @@ def login():
             else:
                 X = True
         return render_template('login.html', login=login, X=X, Y=Y)
+
+@app.route("/createaccount", methods=['GET', 'POST'])
+def createAccount():
+    account = Login()
+    X = True
+    if account.validate_on_submit():
+        with open(os.path.join(os.path.dirname(__file__), 'users.csv')) as X:
+            X = csv.reader(X)
+            for row in X:
+                print(row)
+                if row[0] == account.username.data:
+                    X = False
+                    return render_template('createaccounts.html', account=account, X=X)
+                if account.password.data == '':
+                    Y = False
+                if account.password.data != account.passwordConfirmation.data:
+                    Z = False
+                else:
+                    with open(os.path.join(os.path.dirname(__file__), 'users.csv'), 'a',newline='') as X:
+                        X = csv.writer(X, delimiter=',')
+                        X.writerow([account.username.data, account.password.data])
+                    return redirect ('/login')
+    return render_template('createaccounts.html', account=account, X=X)
 
 @app.route("/logout")
 def logout():
