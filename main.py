@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request, session, abort, flash, redirect
+from flask import Flask, render_template, request, session, abort, flash, redirect, session, sessions, Session
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from flask_bootstrap import Bootstrap
 import csv
 import re
@@ -15,6 +15,8 @@ class Login(FlaskForm):
     username = StringField('Usuario')
     password = PasswordField('Contraseña')
     passwordConfirmation = PasswordField('Confirmar Contraseña')
+    submit_test = SubmitField('Hola')
+    test1 = TextAreaField('Test')
 
 class References(FlaskForm):
     clientName = StringField('Nombre del cliente:')
@@ -371,6 +373,7 @@ def login():
                     print(row[0])
                     print(row[1])
                     if login.username.data == row[0] and login.password.data == row[1]:
+                        session['username'] = login.username.data
                         session['logged_in'] = True
                         return redirect('/')
             if login.password.data == None and login.username.data == None:
@@ -384,25 +387,71 @@ def login():
 @app.route("/createaccount", methods=['GET', 'POST'])
 def createAccount():
     account = Login()
-    X = True
+    W = False
+    Y = False
+    Z = False
     if account.validate_on_submit():
+        print('heloooo:', account.username.data)
         with open(os.path.join(os.path.dirname(__file__), 'users.csv')) as X:
             X = csv.reader(X)
             for row in X:
                 print(row)
-                if row[0] == account.username.data:
-                    X = False
+                if row[0] == account.username.data and (account.password.data == '' or account.passwordConfirmation.data) == '':
+                    W = True
                     return render_template('createaccounts.html', account=account, X=X)
-                if account.password.data == '':
-                    Y = False
-                if account.password.data != account.passwordConfirmation.data:
-                    Z = False
-                else:
+                if (row[0] != account.username.data and account.username.data != '') and (account.password.data == '' or account.passwordConfirmation.data == ''):
+                    Y = True
+                    return render_template('createaccounts.html', account=account, Y=Y)
+                if (row[0] != account.username.data and account.username.data != '') and (account.password.data != account.passwordConfirmation.data):
+                    Z = True
+                    return render_template('createaccounts.html', account=account, Z=Z)
+                if (account.username.data != '' and account.password.data == '' and account.passwordConfirmation.data == '') or (X == False or Y == False or Z == False):
                     with open(os.path.join(os.path.dirname(__file__), 'users.csv'), 'a',newline='') as X:
                         X = csv.writer(X, delimiter=',')
                         X.writerow([account.username.data, account.password.data])
                     return redirect ('/login')
-    return render_template('createaccounts.html', account=account, X=X)
+        print('BOOLIANTEST:', W, Y , Z)
+    return render_template('createaccounts.html', account=account, W=W, Y=Y, Z=Z)
+
+@app.route("/passwordchange", methods=['GET', 'POST'])
+def passwordChange():
+    passwordChange = Login()
+    #security = login()
+    if session['logged_in'] == True:
+        print(session['username'])
+    X = False
+    print(passwordChange.submit_test.data)
+    if passwordChange.submit_test.data == True:
+        print('YEEEEEEE')
+    else:
+        print('NAAAAAAA')
+    if passwordChange.validate_on_submit():
+        with open(os.path.join(os.path.dirname(__file__), 'users.csv')) as X:
+            X = csv.reader(X)
+            for row in X:
+                if row[0] != passwordChange.username.data:
+                    X = True
+                    return render_template('passwordchange.html', passwordChange=passwordChange, X=X)
+        with open(os.path.join(os.path.dirname(__file__), 'test.txt'), 'r') as X, open(os.path.join(os.path.dirname(__file__), 'test_1.txt'), 'w') as Y:
+            X = csv.reader(X)
+            Y = csv.writer(Y)
+            for row in X:
+                print(row)
+                if row[0] == 'hola1':
+                    Y.writerow([row[0], 'Nice2'])
+                else:
+                    Y.writerow([row[0], row[1]])
+                    
+        os.rename((os.path.join(os.path.dirname(__file__), 'test_1.txt')), (os.path.join(os.path.dirname(__file__), 'test.txt')))
+        
+    return render_template('/passwordchange.html', passwordChange=passwordChange)
+
+@app.route("/profile")
+def profile():
+    if session['logged_in'] == False:
+        return redirect('/')
+    else:
+        return render_template('profile.html')
 
 @app.route("/logout")
 def logout():

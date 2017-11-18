@@ -18,18 +18,64 @@
 </style>
 </head>
 <body>
-{% if X %}
-        <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                  <ul class="nav navbar-nav">
-                    <a class="navbar-brand" href="/">FARMACIA</a>
-                    <li><a href="/productsperclient">Productos por cliente</a></li>
-                    <li><a href="/clientsperproduct">Clientes por producto</a></li>
-                    <li><a href="/mostselledproducts">Productos más vendidos</a></li>
-                    <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
-                  </ul>
-                </div>
-        </nav>
+{% if W %}
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <a class="navbar-brand" href="/">FARMACIA</a>
+      <li><a href="/productsperclient">Productos por cliente</a></li>
+      <li><a href="/clientsperproduct">Clientes por producto</a></li>
+      <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+      <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+    </ul>
+  </div>
+</nav>
+<form method="POST" action="{{ url_for('createAccount') }}">
+{{ account.csrf_token }}
+{{ account.username.label }}
+{{ account.username }}<br>
+<p>Nombre de usario no disponible</p>
+{{ account.password.label }}
+{{ account.password }}<br>
+{{ account.passwordConfirmation.label }}
+{{ account.passwordConfirmation }}
+<input type="submit" action="submit">
+
+{% elif Y %}
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <a class="navbar-brand" href="/">FARMACIA</a>
+      <li><a href="/productsperclient">Productos por cliente</a></li>
+      <li><a href="/clientsperproduct">Clientes por producto</a></li>
+      <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+      <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+    </ul>
+  </div>
+</nav>
+<form method="POST" action="{{ url_for('createAccount') }}">
+{{ account.csrf_token }}
+{{ account.username.label }}
+{{ account.username }}<br>
+{{ account.password.label }}
+{{ account.password }}<br>
+<p>Debe ingresar una contraseña</p>
+{{ account.passwordConfirmation.label }}
+{{ account.passwordConfirmation }}
+<input type="submit" action="submit">
+
+{% elif Z %}
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <a class="navbar-brand" href="/">FARMACIA</a>
+      <li><a href="/productsperclient">Productos por cliente</a></li>
+      <li><a href="/clientsperproduct">Clientes por producto</a></li>
+      <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+      <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+    </ul>
+  </div>
+</nav>
 <form method="POST" action="{{ url_for('createAccount') }}">
 {{ account.csrf_token }}
 {{ account.username.label }}
@@ -38,26 +84,25 @@
 {{ account.password }}<br>
 {{ account.passwordConfirmation.label }}
 {{ account.passwordConfirmation }}
+<p>La contraseña no coincide</p>
 <input type="submit" action="submit">
+
 {% else %}
 <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-          <ul class="nav navbar-nav">
-            <a class="navbar-brand" href="/">FARMACIA</a>
-            <li><a href="/productsperclient">Productos por cliente</a></li>
-            <li><a href="/clientsperproduct">Clientes por producto</a></li>
-            <li><a href="/mostselledproducts">Productos más vendidos</a></li>
-            <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
-          </ul>
-        </div>
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <a class="navbar-brand" href="/">FARMACIA</a>
+      <li><a href="/productsperclient">Productos por cliente</a></li>
+      <li><a href="/clientsperproduct">Clientes por producto</a></li>
+      <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+      <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+    </ul>
+  </div>
 </nav>
 <form method="POST" action="{{ url_for('createAccount') }}">
 {{ account.csrf_token }}
 {{ account.username.label }}
 {{ account.username }}<br>
-
-<p>Nombre de usario no disponible</p>
-
 {{ account.password.label }}
 {{ account.password }}<br>
 {{ account.passwordConfirmation.label }}

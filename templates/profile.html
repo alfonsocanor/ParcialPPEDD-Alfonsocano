@@ -1,0 +1,64 @@
+{% extends "bootstrap/base.html" %}
+{% block content %}
+<html>
+<head>
+    <style>
+    .right { 
+        text-align:right;  
+    }
+    </style>
+    <title>Bootstrap Icons</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+{% if session['logged_in'] %}
+<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <a class="navbar-brand" href="/">FARMACIA</a>
+                <li><a href="/productsperclient">Productos por cliente</a></li>
+                <li><a href="/clientsperproduct">Clientes por producto</a></li>
+                <li><a href="/mostselledproducts">Productos más vendidos</a></li>
+                <li><a href="/clientsexpendedmoremoney">Mejores clientes</a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a></a></li>
+                <li><a href="/profile"><i class="glyphicon glyphicon-user"></i> Perfil</a></li>
+                <li><a href="/logout">Cerrar sesión</a></li>
+ 
+            </ul>
+        </div>
+</nav>
+<h1 align=center>BIENVENIDO</h1><br>
+{{ session.username }}
+{% else %}
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav">
+            <a class="navbar-brand" href="/">FARMASOFT</a>
+            <li><a href="/login">Ingresar</a></li>
+            <li><a href="/createaccount">Registrarse</a></li>
+        </ul>
+    </div>
+</nav>
+
+<h1 align=center>Bienvenido a FarmaSoft</h1><br>
+<DIV class=center>
+<p>Módulo de consulta de ventas</p><br>
+</DIV>
+{% endif %}
+    
+</body>
+</html>
+{% endblock %}
