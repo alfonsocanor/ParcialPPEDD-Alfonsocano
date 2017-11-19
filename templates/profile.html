@@ -2,11 +2,15 @@
 {% block content %}
 <html>
 <head>
-    <style>
-    .right { 
-        text-align:right;  
-    }
-    </style>
+        <style>
+            .center {
+                text-align: center;
+                margin: auto;
+                width: 80%;
+                border: 3px solid rgba(0, 0, 0, 0);
+                padding: 20px;
+            }
+        </style>
     <title>Bootstrap Icons</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -16,7 +20,7 @@
 <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
-                <a class="navbar-brand" href="/">FARMACIA</a>
+                <a class="navbar-brand" href="/">&#10009; FARMACIA</a>
                 <li><a href="/productsperclient">Productos por cliente</a></li>
                 <li><a href="/clientsperproduct">Clientes por producto</a></li>
                 <li><a href="/mostselledproducts">Productos más vendidos</a></li>
@@ -34,19 +38,22 @@
                 <li><a></a></li>
                 <li><a></a></li>
                 <li><a></a></li>
-                <li><a href="/profile"><i class="glyphicon glyphicon-user"></i> Perfil</a></li>
-                <li><a href="/logout">Cerrar sesión</a></li>
- 
+            <li><a href="/profile"><i class="glyphicon glyphicon-user"></i> Perfil</a></li>
+            <li><a href="/logout">Cerrar sesión</a></li>
             </ul>
         </div>
 </nav>
-<h1 align=center>BIENVENIDO</h1><br>
-{{ session.username }}
+<DIV class=center>
+<h1 align=center>PERFIL</h1><br>
+<p>Nombre de usuario: {{ session.username }}</p>
+<h2>Opciones disponibles </h2>
+<p><a href="/passwordchange">&#9755; Actualización/Cambio de contraseña</a></p>
+</DIV>
 {% else %}
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <ul class="nav navbar-nav">
-            <a class="navbar-brand" href="/">FARMASOFT</a>
+            <a class="navbar-brand" href="/">&#10009; FARMASOFT</a>
             <li><a href="/login">Ingresar</a></li>
             <li><a href="/createaccount">Registrarse</a></li>
         </ul>
