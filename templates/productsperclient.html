@@ -77,8 +77,11 @@
 <br><br>
 <table style="width:auto" align="center">
 <tr>
-    <th>Client Name</th>
-    <th>Product</th>
+    <th>Nombre cliente</th>
+    <th>Códido producto</th>
+    <th>Producto</th>
+    <th>Cantidad</th>
+    <th>Precio</th>
 </tr>
 <tr>
 {% for i in Y %}
@@ -87,7 +90,16 @@
     {{ name.clientName.data }} <br>
     </td>
     <td>
-    {{ i }}
+    {{ i[0] }}
+    </td>
+    <td>
+    {{ i[1] }}
+    </td>
+    <td>
+    {{ i[2] }}
+    </td>
+    <td>
+    {{ i[3] }}
     </td>
   </tr>
 {% endfor %}

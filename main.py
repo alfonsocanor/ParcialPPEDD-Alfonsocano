@@ -145,18 +145,17 @@ class GeneralConsults(FileCheck):
                 if row[self.client] == self.clientName:
                     aux = 1 #Conditional build for deploying a list if the name is exactly as in the DB
         if aux == 1: #If the name is exactly as in the DB
+            list_ProductsPerClients = []
+            list_ProductsPerClients_Aux = []
+            list_ProductsPerClients_Aux2 = []
             with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
                 X = csv.reader(X)
-                list_ProductsPerClients = []
-                list_ProductsPerClients_Aux = []
-                list_ProductsPerClients_Aux2 = []
                 for row in X:
                     if row[self.client] == self.clientName:
                         if row[self.product] not in list_ProductsPerClients_Aux:
                             list_ProductsPerClients_Aux.append([row[self.product_id], row[self.product]])
                 i = 0
                 L = len(list_ProductsPerClients_Aux)
-                AUX = 0
                 while i < L:
                     with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
                         X = csv.reader(X)
@@ -168,11 +167,9 @@ class GeneralConsults(FileCheck):
                     i += 1
                     totalPrice = 0
                     totalQuantity = 0
-                    AUX = 0
-                for j in list_ProductsPerClients_Aux2:
+                for j in list_ProductsPerClients_Aux2: #List Aux 2 used for let just 1 value per product per client
                     if j not in list_ProductsPerClients:
                         list_ProductsPerClients.append(j)
-                print(list_ProductsPerClients)
             return list_ProductsPerClients
         else: #If the name is not the same and more than 3 characters are entered
             with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
@@ -201,22 +198,41 @@ class GeneralConsults(FileCheck):
         self.product_id = T[2] #value return from a tupla / method orderFields
         self.price = T[3]
         self.quantity = T[4]
+        totalPrice = 0
+        totalQuantity = 0
         with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
             X = csv.reader(X)
             for row in X:
                 if self.productname == row[self.product]:
                     aux = 1
-        if aux == 1:
+        if aux == 1: #If the name is exactly as in the DB
+            list_clientsPerProduct = []
+            list_clientsPerProduct_Aux = []
+            list_clientsPerProduct_Aux2 = []
             with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
                 X = csv.reader(X)
-                list_clientsPerProduct = []
                 for row in X:
-                    if row[self.product] == self.productname and row[self.client] not in list_clientsPerProduct:
-                        list_clientsPerProduct.append([row[self.product_id], row[self.client], row[self.quantity], row[self.price]])
+                    if row[self.product] == self.productname and row[self.client] not in list_clientsPerProduct_Aux:
+                        list_clientsPerProduct_Aux.append([row[self.product_id], row[self.client], row[self.quantity], row[self.price]])
+            #print(list_clientsPerProduct)
+            L = len(list_clientsPerProduct_Aux)
+            i = 0
+            while i < L:
+                for j in list_clientsPerProduct_Aux:
+                    if list_clientsPerProduct_Aux[i][1] == j[1]:
+                        totalQuantity = totalQuantity + float(j[2])
+                        totalPrice = totalPrice + float(j[3])
+                list_clientsPerProduct_Aux2.append([list_clientsPerProduct_Aux[i][0], list_clientsPerProduct_Aux[i][1], round(totalQuantity, 2), round(totalPrice, 2)])
+                i += 1
+                totalPrice = 0
+                totalQuantity = 0
+            for j in list_clientsPerProduct_Aux2: #List Aux 2 used for let just 1 value per product per client
+                if j not in list_clientsPerProduct:
+                    list_clientsPerProduct.append(j)
             return list_clientsPerProduct
         else: #If the name is not the same and more than 3 characters are entered
             with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
-                list_ProductsPerClients = []
+                list_clientsPerProduct = []
                 X = csv.reader(X)
                 if len(self.productname) >= 3:
                     list_aux = ['search']
@@ -224,12 +240,17 @@ class GeneralConsults(FileCheck):
                         if self.productname in row[self.product]:
                             list_aux.append(row[self.product])
                     for i in list_aux:
-                        if i not in list_ProductsPerClients:
+                        if i not in list_clientsPerProduct:
                             if i == 'PRODUCTO':
                                 pass
                             else:
-                                list_ProductsPerClients.append(i)
-            return list_ProductsPerClients
+                                list_clientsPerProduct.append(i)
+            list_clientsPerProduct_Aux = list_clientsPerProduct
+            list_clientsPerProduct = []
+            for j in list_clientsPerProduct_Aux: #List Aux 2 used for let just 1 value per product per client
+                    if j not in list_clientsPerProduct:
+                        list_clientsPerProduct.append(j)
+            return list_clientsPerProduct
 
     def n_MostSelledProducts(self, K):
         self.K = K
