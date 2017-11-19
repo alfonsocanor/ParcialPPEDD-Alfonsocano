@@ -149,22 +149,30 @@ class GeneralConsults(FileCheck):
                 X = csv.reader(X)
                 list_ProductsPerClients = []
                 list_ProductsPerClients_Aux = []
+                list_ProductsPerClients_Aux2 = []
                 for row in X:
                     if row[self.client] == self.clientName:
                         if row[self.product] not in list_ProductsPerClients_Aux:
                             list_ProductsPerClients_Aux.append([row[self.product_id], row[self.product]])
                 i = 0
                 L = len(list_ProductsPerClients_Aux)
-                while i <= L:
-                    for row in X:
-                        if row[self.client] == self.clientName and row[self.product] == list_ProductsPerClients_Aux[i][1]:
-                            totalQuantity = totalQuantity + float(row[self.quantity])
-                            totalPrice = totalPrice + float(row[self.price])
-                    list_ProductsPerClients.append([list_ProductsPerClients_Aux[i][0], list_ProductsPerClients_Aux[i][0], totalQuantity, totalPrice])
+                AUX = 0
+                while i < L:
+                    with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
+                        X = csv.reader(X)
+                        for row in X:
+                            if row[self.client] == self.clientName and row[self.product] == list_ProductsPerClients_Aux[i][1]:
+                                totalQuantity = totalQuantity + float(row[self.quantity])
+                                totalPrice = totalPrice + float(row[self.price])
+                    list_ProductsPerClients_Aux2.append([list_ProductsPerClients_Aux[i][0], list_ProductsPerClients_Aux[i][1], round(totalQuantity, 2), round(totalPrice, 2)])
                     i += 1
                     totalPrice = 0
                     totalQuantity = 0
-
+                    AUX = 0
+                for j in list_ProductsPerClients_Aux2:
+                    if j not in list_ProductsPerClients:
+                        list_ProductsPerClients.append(j)
+                print(list_ProductsPerClients)
             return list_ProductsPerClients
         else: #If the name is not the same and more than 3 characters are entered
             with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
@@ -387,8 +395,6 @@ def login():
             with open(os.path.join(os.path.dirname(__file__), 'users.csv')) as X:
                 X = csv.reader(X)
                 for row in X:
-                    print(row[0])
-                    print(row[1])
                     if login.username.data == row[0] and login.password.data == row[1]:
                         session['username'] = login.username.data
                         session['password'] = login.password.data
@@ -412,12 +418,9 @@ def createAccount():
         return redirect('/')
     else:
         if account.validate_on_submit():
-            print('heloooo:', account.username.data)
             with open(os.path.join(os.path.dirname(__file__), 'users.csv')) as X:
                 X = csv.reader(X)
                 for row in X:
-                    print(row)
-                    print('W:', W)
                     if row[0] == account.username.data and (account.password.data == '' or account.passwordConfirmation.data == ''):
                         W = True
                         return render_template('createaccounts.html', account=account, W=W)
@@ -432,7 +435,6 @@ def createAccount():
                             X = csv.writer(X, delimiter=',')
                             X.writerow([account.username.data, account.password.data])
                         return redirect ('/login')
-                print('BOOLIANTEST:', W, Y , Z)
         return render_template('createaccounts.html', account=account, W=W, Y=Y, Z=Z)
 
 @app.route("/passwordchange", methods=['GET', 'POST'])
@@ -501,7 +503,7 @@ def productsPerClient():
             elif Y[0] == 'search':
                 W = True
                 Y.remove('search')
-        print(Y)
+        #print(Y)
         return render_template('productsperclient.html', name=name, Y=Y, X=X, Z=Z, W=W)
     else:
         return redirect ('/login')
