@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-from flask import Flask, render_template, request, session, abort, flash, redirect, session, sessions, Session
+from flask import Flask, render_template, request, session, abort, flash, redirect, sessions, Session, send_file
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from flask_bootstrap import Bootstrap
 import csv
 import re
 import os
-from time import gmtime, strftime
+from time import strftime
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -146,8 +146,8 @@ class GeneralConsults(FileCheck):
                     aux = 1 #Conditional build for deploying a list if the name is exactly as in the DB
         if aux == 1: #If the name is exactly as in the DB
             list_ProductsPerClients = []
-            list_ProductsPerClients_Aux = []
-            list_ProductsPerClients_Aux2 = []
+            list_ProductsPerClients_Aux = [] #Used as the first pivot to put the csv data into a list
+            list_ProductsPerClients_Aux2 = [] #Used as the second pivot to return unique values
             with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
                 X = csv.reader(X)
                 for row in X:
@@ -214,7 +214,6 @@ class GeneralConsults(FileCheck):
                 for row in X:
                     if row[self.product] == self.productname and row[self.client] not in list_clientsPerProduct_Aux:
                         list_clientsPerProduct_Aux.append([row[self.product_id], row[self.client], row[self.quantity], row[self.price]])
-            #print(list_clientsPerProduct)
             L = len(list_clientsPerProduct_Aux)
             i = 0
             while i < L:
@@ -524,7 +523,14 @@ def productsPerClient():
             elif Y[0] == 'search':
                 W = True
                 Y.remove('search')
-        #print(Y)
+            if name.exportFile.data:
+                T = strftime("%Y%m%d_%H%M%S")
+                print(T)
+                with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
+                    X = csv.writer(X, delimiter=',')
+                    for i in Y:
+                        X.writerow([name.clientName.data, i[0], i[1], i[2], i[3]])
+                return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
         return render_template('productsperclient.html', name=name, Y=Y, X=X, Z=Z, W=W)
     else:
         return redirect ('/login')
