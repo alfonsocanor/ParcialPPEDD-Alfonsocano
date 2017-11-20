@@ -525,7 +525,6 @@ def productsPerClient():
                 Y.remove('search')
             if name.exportFile.data:
                 T = strftime("%Y%m%d_%H%M%S")
-                print(T)
                 with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
                     X = csv.writer(X, delimiter=',')
                     for i in Y:
@@ -557,7 +556,13 @@ def clientsPerProduct():
             elif Y[0] == 'search':
                 W = True
                 Y.remove('search')
-        print(Y)
+            if product.exportFile.data:
+                T = strftime("%Y%m%d_%H%M%S")
+                with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
+                    X = csv.writer(X, delimiter=',')
+                    for i in Y:
+                        X.writerow([product.productname.data, i[0], i[1], i[2], i[3]])
+                return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
         return render_template('clientsperproducts.html', product=product, Y=Y, X=X, Z=Z, W=W)
     else:
         return redirect('/login')
@@ -586,6 +591,14 @@ def clientsExpendedMoreMoney():
             Y = gc.n_ClientsExpendedMoreMoney(ranking.K.data)
             if ranking.K.data == 0:
                 ranking.K.data = ''
+            #if ranking.exportFile.data:
+            #    T = strftime("%Y%m%d_%H%M%S")
+            #    with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
+            #        X = csv.writer(X, delimiter=',')
+            #        for i in Y:
+            #            X.writerow([product.productname.data, i[0], i[1], i[2], i[3]])
+            #    return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
+
         return render_template('clientsexpendedmoremoney.html', ranking=ranking, Y=Y, X=X, Z=Z)
     else:
         return redirect('/login')
