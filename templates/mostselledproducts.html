@@ -14,6 +14,15 @@
             border: 3px solid rgba(0, 0, 0, 0);
             padding: 20px;
         }
+        .footer {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 1rem;
+            background-color: #efefef00;
+            text-align: center;
+        }
 </style>
 </head>
 <body>
@@ -53,12 +62,17 @@
 
 {% if Z %}
 {% if X %}
+<p>Click en "Exportar" para descargar la información</p>
+<a href="/mostselledproducts">{{ ranking.exportFile }}</a>
+<br><br>
+
 <table style="width:auto" align="center">
 <tr>
     <th>Racking</th>
-    <th>Product ID</th>
-    <th>Product</th>
-    <th>Quantity</th>
+    <th>Código</th>
+    <th>Producto</th>
+    <th>Total vendido(Unidades)</th>
+    <th>Total vendido($)</th>
 </tr>
 {% for i in Y %}
 <tr>
@@ -73,6 +87,9 @@
     </td>
     <td>
         {{ i[3] }}
+    </td>
+    <td>
+        {{ i[4] }}
     </td>
 </tr>
 {% endfor %}
@@ -98,5 +115,8 @@
 </DIV>
 </form>
 </body>
+<footer class=footer>
+    <p>© Copyright 2017. Todos los derechos reservados | FarmaSoft S.A. | @lf0n$0C@n0</p>
+</footer>
 </html>
 {% endblock %}

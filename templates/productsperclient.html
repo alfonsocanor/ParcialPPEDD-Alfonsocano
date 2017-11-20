@@ -15,6 +15,15 @@
             border: 3px solid rgba(0, 0, 0, 0);
             padding: 20px;
         }
+        .footer {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 1rem;
+            background-color: #efefef00;
+            text-align: center;
+        }
 </style>
 </head>
 <body>
@@ -59,7 +68,7 @@
 <p>Utilice la lista para copiar el nombre exacto del cliente en la búsqueda</p>
 <table style="width:auto" align="center">
 <tr>
-    <th>Clients</th>
+    <th>Clientes</th>
 </tr>
 {% for i in Y %}
   <tr>
@@ -126,6 +135,9 @@
 {% endif %} 
 </DIV>
 </form>
+<footer class=footer>
+  <p>© Copyright 2017. Todos los derechos reservados | FarmaSoft S.A. | @lf0n$0C@n0</p>
+</footer>
 </body>
 </html>
 {% endblock %}

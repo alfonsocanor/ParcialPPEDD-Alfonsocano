@@ -264,6 +264,7 @@ class GeneralConsults(FileCheck):
         self.product = T[0] #value returned from a tupla / method orderFields from class FileCheck
         self.client = T[1] #value returned from a tupla / method orderFields from class FileCheck
         self.product_id = T[2] #value returned from a tupla / method orderFields from class FileCheck
+        self.price = T[3]
         self.quantity = T[4]
         with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
             X = csv.reader(X)
@@ -300,7 +301,24 @@ class GeneralConsults(FileCheck):
         max = 0
         n = 1
         maxList = []
-        if int(self.K) >= u: #It limits the racking to the lenth of the csv products single value
+        productsPriceList = []
+        productsPriceList_Aux = []
+        productsPriceList_Aux2 = []
+        totalPrice = 0
+        with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
+            X = csv.reader(X)
+            for row in X:
+                if  row[self.product] not in productsPriceList_Aux and row[self.product] != 'PRODUCTO':
+                    productsPriceList_Aux.append(row[self.product])
+        for i in productsPriceList_Aux:
+            with open(os.path.join(os.path.dirname(__file__), self.fileName)) as X:
+                X = csv.reader(X)
+                for row in X:
+                    if i == row[self.product]:
+                        totalPrice = totalPrice + float(row[self.price])
+            productsPriceList_Aux2.append([i, round(totalPrice, 2)])
+            totalPrice = 0
+        if int(self.K) >= u: #It limits the racking to the lenth of the csv products
             self.K = u
         while n <= int(self.K):
             for i in dictMax:
@@ -316,8 +334,12 @@ class GeneralConsults(FileCheck):
                 for row in X:
                     if row[self.product_id] == maxKey:
                         P = row[self.product] #Product description is P
-            maxList.append([n, maxKey, P, max])
+                        for i in productsPriceList_Aux2:
+                            if i[0] == P:
+                                totalPrice = i[1]
+            maxList.append([n, maxKey, P, max, totalPrice])
             max = 0
+            totalPrice = 0
             n += 1
         return maxList
 
@@ -441,20 +463,25 @@ def createAccount():
             with open(os.path.join(os.path.dirname(__file__), 'users.csv')) as X:
                 X = csv.reader(X)
                 for row in X:
-                    if row[0] == account.username.data and (account.password.data == '' or account.passwordConfirmation.data == ''):
+                    if row[0] == account.username.data:
                         W = True
                         return render_template('createaccounts.html', account=account, W=W)
-                    if (row[0] != account.username.data and account.username.data != '') and (account.password.data == '' or account.passwordConfirmation.data == ''):
+            with open(os.path.join(os.path.dirname(__file__), 'users.csv')) as X:
+                X = csv.reader(X)
+                for row in X:
+                    if account.password.data == '' or account.passwordConfirmation.data == '':
                         Y = True
                         return render_template('createaccounts.html', account=account, Y=Y)
-                    if (row[0] != account.username.data and account.username.data != '') and (account.password.data != account.passwordConfirmation.data):
+            with open(os.path.join(os.path.dirname(__file__), 'users.csv')) as X:
+                X = csv.reader(X)
+                for row in X:
+                    if account.password.data != account.passwordConfirmation.data:
                         Z = True
                         return render_template('createaccounts.html', account=account, Z=Z)
-                    if (account.username.data != '' and account.password.data == '' and account.passwordConfirmation.data == '') or (X == False or Y == False or Z == False):
-                        with open(os.path.join(os.path.dirname(__file__), 'users.csv'), 'a',newline='') as X:
-                            X = csv.writer(X, delimiter=',')
-                            X.writerow([account.username.data, account.password.data])
-                        return redirect ('/login')
+            with open(os.path.join(os.path.dirname(__file__), 'users.csv'), 'a',newline='') as X:
+                X = csv.writer(X, delimiter=',')
+                X.writerow([account.username.data, account.password.data])
+            return redirect ('/login')
         return render_template('createaccounts.html', account=account, W=W, Y=Y, Z=Z)
 
 @app.route("/passwordchange", methods=['GET', 'POST'])
@@ -523,10 +550,13 @@ def productsPerClient():
             elif Y[0] == 'search':
                 W = True
                 Y.remove('search')
-            if name.exportFile.data:
-                T = strftime("%Y%m%d_%H%M%S")
+            if name.exportFile.data: #Statements for exporting data to a csv
+                T = strftime("%Y%m%d_%H%M%S") #Used in the name format of the file exported
                 with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
                     X = csv.writer(X, delimiter=',')
+                    consultDetail = 'Productos comprados por el cliente ' + name.clientName.data
+                    X.writerow([consultDetail])
+                    X.writerow(['Nombre', 'Código', 'Producto', 'Cantidad', 'Precio'])
                     for i in Y:
                         X.writerow([name.clientName.data, i[0], i[1], i[2], i[3]])
                 return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
@@ -556,10 +586,13 @@ def clientsPerProduct():
             elif Y[0] == 'search':
                 W = True
                 Y.remove('search')
-            if product.exportFile.data:
-                T = strftime("%Y%m%d_%H%M%S")
+            if product.exportFile.data: #Statements for exporting data to a csv
+                T = strftime("%Y%m%d_%H%M%S") #Used in the name format of the file exported
                 with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
                     X = csv.writer(X, delimiter=',')
+                    consultDetail = 'Clientes que comprar el producto ' + product.productname.data
+                    X.writerow([consultDetail])
+                    X.writerow(['Producto', 'Código', 'Nombre', 'Cantidad', 'Precio'])
                     for i in Y:
                         X.writerow([product.productname.data, i[0], i[1], i[2], i[3]])
                 return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
@@ -591,14 +624,16 @@ def clientsExpendedMoreMoney():
             Y = gc.n_ClientsExpendedMoreMoney(ranking.K.data)
             if ranking.K.data == 0:
                 ranking.K.data = ''
-            #if ranking.exportFile.data:
-            #    T = strftime("%Y%m%d_%H%M%S")
-            #    with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
-            #        X = csv.writer(X, delimiter=',')
-            #        for i in Y:
-            #            X.writerow([product.productname.data, i[0], i[1], i[2], i[3]])
-            #    return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
-
+            if ranking.exportFile.data: #Statements for exporting data to a csv
+                T = strftime("%Y%m%d_%H%M%S") #Used in the name format of the file exported
+                with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
+                    X = csv.writer(X, delimiter=',')
+                    consultDetail = 'TOP ' + ranking.K.data + ': Ranking de mejores clientes según el total en pesos de sus compras'
+                    X.writerow([consultDetail])
+                    X.writerow(['Número', 'Nombre', 'Total comprado'])
+                    for i in Y:
+                        X.writerow([i[0], i[1], i[2]])
+                return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
         return render_template('clientsexpendedmoremoney.html', ranking=ranking, Y=Y, X=X, Z=Z)
     else:
         return redirect('/login')
@@ -627,6 +662,16 @@ def mostSelledProducts():
             Y = gc.n_MostSelledProducts(ranking.K.data)
             if ranking.K.data == 0:
                 ranking.K.data = ''
+            if ranking.exportFile.data: #Statements for exporting data to a csv
+                T = strftime("%Y%m%d_%H%M%S") #Used in the name format of the file exported
+                with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
+                    X = csv.writer(X, delimiter=',')
+                    consultDetail = 'TOP ' + ranking.K.data + ': Ranking de los productos más vendidos según el total de ventas en pesos'
+                    X.writerow([consultDetail])
+                    X.writerow(['Número', 'Código', 'Producto', 'Total vendido(Unidades)', 'Total vendido($)'])
+                    for i in Y:
+                        X.writerow([i[0], i[1], i[2], i[3], i[4]])
+                return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
         return render_template('mostselledproducts.html', ranking=ranking, Y=Y, X=X, Z=Z)
     else:
         return redirect('/login')

@@ -13,6 +13,12 @@ Los datos son enviados a archivos .html escritos en código **HTML, CSS, Bootstr
 
 Los .HTML envían mediante flask, información introducida por el usuario en pantalla y es recibido por python para el procesamiento según el código.
 
+Para la entrega final el programa ha sido dotado con 3 nuevas carácterísticas y funcionalidades particulares.
+
+> -Se puede crear nuevas cuentas para un manejo personalizado de la información
+> -Se puede realizar cambio de contrasena
+> -Se puede realizar la exportación de la información de las consultas en formato .csv
+
 Finalmente todo es desplegado en las plantillas utilizando interfaz gráfica Boorstrap en los exploradores.
 
 ```sequence
@@ -58,17 +64,21 @@ Cómo se usa el programa
 > - El usuario podrá ingresar el nombre exacto del cliente en mayúsculas y mostrará la información 
 > - Si el nombre es erróneo no mostrará ninguna información
 > - El usuario puede ingresar en mayúscula 3 letras o más del nombre cliente y se desplegará una lista donde podrá utilizar el nombre para realizar la consulta
+> - Al finalizar la consulta el usuario puede realizar la descarga de la información en un archívo .csv
 #####Clientes por productos
 > - El usuario podrá ingresar el nombre exacto del producto en mayúsculas y mostrará la información
 > - Si el nombre es erróneo no mostrará ninguna información
 > - El usuario puede ingresar en mayúscula 3 letras o más del nombre del producto y se desplegará una lista donde podrá utilizar el nombre para realizar la consulta
+> - Al finalizar la consulta el usuario puede realizar la descarga de la información en un archívo .csv
 #####Productos más vendidos
 > - El usuario podrá ingresar el número del rancking que quiere crear
 > - Se mostrará una lista con los n productos más vendidos
+> - Al finalizar la consulta el usuario puede realizar la descarga de la información en un archívo .csv
 #####Mejores clientes
 > - El usuario podrá ingresar el número del rancking que quiere crear
 > - Se mostrará una lista con los n clientes que más compras hicieron dado el precio 
 cerrar sesión
+> - Al finalizar la consulta el usuario puede realizar la descarga de la información en un archívo .csv
 > - Cerrará la sesión iniciada por el usuario
 
 Qué clases se diseñaron y por qué

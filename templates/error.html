@@ -16,6 +16,15 @@
                     border: 3px solid rgba(0, 0, 0, 0);
                     padding: 20px;
                 }
+                .footer {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    padding: 1rem;
+                    background-color: #efefef00;
+                    text-align: center;
+                }
         </style>
 </head>
 <body>
@@ -61,6 +70,7 @@
         <ul class="nav navbar-nav">
             <a class="navbar-brand" href="/">&#10009; FARMASOFT</a>
             <li><a href="/login">Ingresar</a></li>
+            <li><a href="/createaccount">Registrarse</a></li>
         </ul>
     </div>
 </nav>
@@ -74,7 +84,9 @@
 {% endif %}
 
 {% endif %}
-
+<footer class=footer>
+    <p>© Copyright 2017. Todos los derechos reservados | FarmaSoft S.A. | @lf0n$0C@n0</p>
+</footer>
 </body>
 </html>
 {% endblock %}

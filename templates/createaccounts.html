@@ -15,101 +15,51 @@
         border: 3px solid rgba(0, 0, 0, 0);
         padding: 20px;
     }
+    .footer {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          padding: 1rem;
+          background-color: #efefef00;
+          text-align: center;
+    }
 </style>
 </head>
 <body>
-
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+        <a class="navbar-brand" href="/">&#10009; FARMASOFT</a>
+        <li><a href="/login">Ingresar</a></li>
+        <li><a href="/createaccount">Registrarse</a></li>
+    </ul>
+  </div>
+</nav>
+<form method="POST" action="{{ url_for('createAccount') }}">
+<DIV class=center>
+{{ account.csrf_token }}
+{{ account.username.label }}
+{{ account.username }}<br>
 {% if W %}
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <ul class="nav navbar-nav">
-        <a class="navbar-brand" href="/">&#10009; FARMASOFT</a>
-        <li><a href="/login">Ingresar</a></li>
-        <li><a href="/createaccount">Registrarse</a></li>
-    </ul>
-  </div>
-</nav>
-<form method="POST" action="{{ url_for('createAccount') }}">
-<DIV class=center>
-{{ account.csrf_token }}
-{{ account.username.label }}
-{{ account.username }}<br>
 <p>Nombre de usario no disponible</p>
-{{ account.password.label }}
-{{ account.password }}<br>
-{{ account.passwordConfirmation.label }}
-{{ account.passwordConfirmation }}<br>
-<input type="submit" action="submit">
-</DIV>
-{% elif Y %}
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <ul class="nav navbar-nav">
-        <a class="navbar-brand" href="/">&#10009; FARMASOFT</a>
-        <li><a href="/login">Ingresar</a></li>
-        <li><a href="/createaccount">Registrarse</a></li>
-    </ul>
-  </div>
-</nav>
-<form method="POST" action="{{ url_for('createAccount') }}">
-<DIV class=center>
-{{ account.csrf_token }}
-{{ account.username.label }}
-{{ account.username }}<br>
-{{ account.password.label }}
-{{ account.password }}<br>
-<p>Debe ingresar una contraseña</p>
-{{ account.passwordConfirmation.label }}
-{{ account.passwordConfirmation }}<br>
-<input type="submit" action="submit">
-</DIV>
-</DIV>
-{% elif Z %}
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <ul class="nav navbar-nav">
-        <a class="navbar-brand" href="/">&#10009; FARMASOFT</a>
-        <li><a href="/login">Ingresar</a></li>
-        <li><a href="/createaccount">Registrarse</a></li>
-    </ul>
-  </div>
-</nav>
-<form method="POST" action="{{ url_for('createAccount') }}">
-<DIV class=center>
-{{ account.csrf_token }}
-{{ account.username.label }}
-{{ account.username }}<br>
-{{ account.password.label }}
-{{ account.password }}<br>
-{{ account.passwordConfirmation.label }}
-{{ account.passwordConfirmation }}
-<p>La contraseña no coincide</p><br>
-<input type="submit" action="submit">
-</DIV>
-{% else %}
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <ul class="nav navbar-nav">
-      <a class="navbar-brand" href="/">&#10009; FARMASOFT</a>
-      <li><a href="/login">Ingresar</a></li>
-      <li><a href="/createaccount">Registrarse</a></li>
-    </ul>
-  </div>
-</nav>
-<form method="POST" action="{{ url_for('createAccount') }}">
-<DIV class=center>
-{{ account.csrf_token }}
-{{ account.username.label }}
-{{ account.username }}<br>
-{{ account.password.label }}
-{{ account.password }}<br>
-{{ account.passwordConfirmation.label }}
-{{ account.passwordConfirmation }}<br>
-<input type="submit" action="submit">
-</DIV>
 {% endif %}
-
+{{ account.password.label }}
+{{ account.password }}<br>
+{% if Y %}
+<p>Ingrese una contraseña</p>
+{% endif %}
+{% if Z %}
+<p>No coninciden las contraseñas</p>
+{% endif %}
+{{ account.passwordConfirmation.label }}
+{{ account.passwordConfirmation }}<br>
+<input type="submit" action="submit">
+</DIV>
 </form>
+<footer class=footer>
+  <p>© Copyright 2017. Todos los derechos reservados | FarmaSoft S.A. | @lf0n$0C@n0</p>
+</footer>
 </body>
 </html>
 
