@@ -504,16 +504,12 @@ def passwordChange():
             X = csv.reader(X)
             Y = csv.writer(Y)
             for row in X:
-                print(row)
-                print(session['username'])
                 if row[0] == session['username']:
                     Y.writerow([row[0], passwordChange.password.data])
                 else:
                     Y.writerow([row[0], row[1]])
-                print(row)
         os.rename((os.path.join(os.path.dirname(__file__), 'users_backup.csv')), (os.path.join(os.path.dirname(__file__), 'users.csv')))
         return redirect('/')
-        
     return render_template('/passwordchange.html', passwordChange=passwordChange)
 
 @app.route("/profile")
