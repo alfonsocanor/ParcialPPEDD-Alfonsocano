@@ -408,6 +408,34 @@ class GeneralConsults(FileCheck):
             n += 1
         return maxList
         
+class ExportFile():
+    def __init__(self, header, referenceExport, referenceConsult, listConsult):
+        self.header = header
+        self.referenceExport = referenceExport
+        self.referenceConsult = referenceConsult
+        self.listConsult = listConsult
+    def exportFile(self):
+        time = strftime("%Y%m%d_%H%M%S") #Used in the name format of the file exported
+        with open(os.path.join(os.path.dirname(__file__), 'resultados_'+time+'.csv'), 'a') as fileExport:
+            fileExport = csv.writer(fileExport, delimiter=',')
+            consultDetail = self.header + self.referenceConsult
+            fileExport.writerow([consultDetail])
+            fileExport.writerow(['Nombre', 'Código', 'Producto', 'Cantidad', 'Precio'])
+            for i in self.listConsult:
+                fileExport.writerow([self.referenceConsult, i[0], i[1], i[2], i[3]])
+        return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+time+'.csv'), attachment_filename='resultados_'+time+'.csv', as_attachment=True)
+
+'''          if name.exportFile.data: #Statements for exporting data to a csv
+                T = strftime("%Y%m%d_%H%M%S") #Used in the name format of the file exported
+                with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
+                    X = csv.writer(X, delimiter=',')
+                    consultDetail = 'Productos comprados por el cliente ' + name.clientName.data
+                    X.writerow([consultDetail])
+                    X.writerow(['Nombre', 'Código', 'Producto', 'Cantidad', 'Precio'])
+                    for i in Y:
+                        X.writerow([name.clientName.data, i[0], i[1], i[2], i[3]])
+                return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)'''
+
 
 @app.route('/')
 def home():
@@ -546,16 +574,19 @@ def productsPerClient():
             elif Y[0] == 'search':
                 W = True
                 Y.remove('search')
-            if name.exportFile.data: #Statements for exporting data to a csv
-                T = strftime("%Y%m%d_%H%M%S") #Used in the name format of the file exported
-                with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
-                    X = csv.writer(X, delimiter=',')
-                    consultDetail = 'Productos comprados por el cliente ' + name.clientName.data
-                    X.writerow([consultDetail])
-                    X.writerow(['Nombre', 'Código', 'Producto', 'Cantidad', 'Precio'])
-                    for i in Y:
-                        X.writerow([name.clientName.data, i[0], i[1], i[2], i[3]])
-                return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
+            if name.exportFile.data:
+                fileExportConsult = ExportFile('Productos comprados por el cliente', name.exportFile.data,  name.clientName.data, Y)
+                fileExportConsult.exportFile()
+            #if name.exportFile.data: #Statements for exporting data to a csv
+            #    T = strftime("%Y%m%d_%H%M%S") #Used in the name format of the file exported
+            #    with open(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), 'a') as X:
+            #        X = csv.writer(X, delimiter=',')
+            #        consultDetail = 'Productos comprados por el cliente ' + name.clientName.data
+            #        X.writerow([consultDetail])
+            #        X.writerow(['Nombre', 'Código', 'Producto', 'Cantidad', 'Precio'])
+            #        for i in Y:
+            #            X.writerow([name.clientName.data, i[0], i[1], i[2], i[3]])
+            #    return send_file(os.path.join(os.path.dirname(__file__), 'resultados_'+T+'.csv'), attachment_filename='resultados_'+T+'.csv', as_attachment=True)
         return render_template('productsperclient.html', name=name, Y=Y, X=X, Z=Z, W=W)
     else:
         return redirect ('/login')
