@@ -1,5 +1,7 @@
 > Written with [StackEdit](https://stackedit.io/).
 
+![Alt Text](https://mindful-unicorn-vro2dw-dev-ed--c.documentforce.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Gif&versionId=0685w00000QjV7t&operationContext=DELIVERY&contentId=05T5w00001Rtdm7&page=0&d=/a/5w0000022pzs/A1fM8xZzGIu6p6HeCg3EqTTPPqcfvUmhfMNod5xRJnQ&oid=00D5w000004ChOL&dpt=null&viewId=)
+
 Flujo del programa
 ===================
 
