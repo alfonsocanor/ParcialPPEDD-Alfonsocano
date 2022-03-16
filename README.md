@@ -1,6 +1,6 @@
 > Written with [StackEdit](https://stackedit.io/).
 
-![Alt Text](https://mindful-unicorn-vro2dw-dev-ed--c.documentforce.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Gif&versionId=0685w00000QjWCZ&operationContext=DELIVERY&contentId=05T5w00001RtgFs&page=0&d=/a/5w0000022q3a/g94i8sy6s24YUEykfvnLldKNwHqxqTge9TMO2TA3.TM&oid=00D5w000004ChOL&dpt=null&viewId=)
+![Alt Text](https://mindful-unicorn-vro2dw-dev-ed--c.documentforce.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Gif&versionId=0685w00000QjWDw&operationContext=DELIVERY&contentId=05T5w00001RtgJz&page=0&d=/a/5w0000022q3f/1YxOVX86E7vW9syxVKrRgmu1nL3J207KJi3nCGHWhgM&oid=00D5w000004ChOL&dpt=null&viewId=)
 
 Flujo del programa
 ===================
